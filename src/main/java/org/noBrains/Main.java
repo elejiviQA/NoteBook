@@ -14,9 +14,12 @@ public class Main {
         while (scanner.hasNext()) {
             String line = scanner.nextLine().strip();
             switch (line) {
-                case "help" -> noteBookService.help();
-                case "note-new" -> noteBookService.createNote();
-                case "note-list" -> noteBookService.getNotes(); //sout
+                case "help" -> noteBookService.getAllCommands();
+                case "note-new" -> noteBookService.createNewNote();
+                case "note-list" -> noteBookService.getAllNotes();
+                case "note-remove" -> noteBookService.removeNoteById();
+                case "note-export" -> noteBookService.exportNotesToFile();
+                case "exit" -> noteBookService.exit();
                 default -> log.warning("команда не найдена");
             }
         }

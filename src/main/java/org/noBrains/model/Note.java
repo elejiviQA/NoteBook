@@ -22,12 +22,13 @@ public class Note {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("{").append(id).append("}#{").append(text).append("}\n");
+        String sp = String.format("%n");
+        sb.append("{").append(id).append("}#{").append(text).append("}").append(sp);
         if (!labels.get(0).toString().isEmpty()) {
             labels.forEach(label -> sb.append("{").append(label).append("};"));
-            sb.deleteCharAt(sb.length() - 1).append("\n\n===================\n");
+            sb.deleteCharAt(sb.length() - 1).append(sp).append(sp).append("===================").append(sp);
         } else {
-            sb.append("\n===================\n");
+            sb.append(sp).append("===================").append(sp);
         }
         return sb.toString();
     }
