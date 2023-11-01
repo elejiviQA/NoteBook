@@ -162,11 +162,10 @@ public class NoteDaoImpl implements NoteDao {
     }
 
     private Note buildNote(String text, String checkedLabels) {
-            Note note = new Note(noteBook, text, buildLabels(checkedLabels.toUpperCase()));
-            noteBook.setNote(note);
-            System.out.println(note); //убрать строку
-            log.info("Заметка добавлена");
-            return note;
+        Note note = new Note(noteBook, text, buildLabels(checkedLabels.toUpperCase()));
+        noteBook.setNote(note);
+        log.info("Заметка добавлена");
+        return note;
     }
 
     private List<Label> buildLabels(String checkedLabels) {
@@ -219,7 +218,6 @@ public class NoteDaoImpl implements NoteDao {
     private void logCallCommand(String command) {
         log.fine("вызвана команда " + command);
     }
-
 
 
     private List<Note> sayIfEmpty(List<Note> notes) throws Exception {

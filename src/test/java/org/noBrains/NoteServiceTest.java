@@ -1,6 +1,7 @@
 package org.noBrains;
 
 import java.io.ByteArrayInputStream;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -39,10 +40,6 @@ public class NoteServiceTest {
     public void testCreateNote_WithoutLabel() throws Exception {
         readFromConsole("text\n\n");
         Note note = noteService.createNewNote();
-        System.out.println(note.getId() == 1);
-        System.out.println(note.getText().equals("text"));
-        System.out.println(note.getLabels().isEmpty());
-        System.out.println(note.getLabels().get(0));
         assertTrue(note.getId() == 1 && note.getText().equals("text") && note.getLabels().get(0).toString().isEmpty());
     }
 

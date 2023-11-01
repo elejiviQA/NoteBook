@@ -1,4 +1,5 @@
 package org.noBrains;
+
 import org.noBrains.model.NoteBook;
 
 public class Main {
