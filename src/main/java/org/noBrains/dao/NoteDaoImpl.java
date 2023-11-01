@@ -163,8 +163,8 @@ public class NoteDaoImpl implements NoteDao {
         return labels;
     }
 
-    private Note buildNote(String text, String checkedLabels) {
-        Note note = new Note(noteBook, text, buildLabels(checkedLabels.toUpperCase()));
+    private Note buildNote(String checkedText, String checkedLabels) {
+        Note note = new Note(noteBook, checkedText, buildLabels(checkedLabels.toUpperCase()));
         noteBook.setNote(note);
         log.info("Заметка добавлена");
         return note;
