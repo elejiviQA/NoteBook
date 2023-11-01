@@ -16,6 +16,18 @@ public class Note {
         id = noteBook.getNewId();
     }
 
+    public List<Label> getLabels() {
+        return labels;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getText() {
+        return text;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -28,17 +40,5 @@ public class Note {
             sb.append(sp).append("===================").append(sp);
         }
         return sb.toString();
-    }
-
-    public List<Label> getLabels() {
-        return labels;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getText() {
-        return text;
     }
 }
