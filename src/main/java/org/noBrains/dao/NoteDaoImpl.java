@@ -46,7 +46,7 @@ public class NoteDaoImpl implements NoteDao {
         String text = checkText(scanner.nextLine());
         log.info("Добавить метки? Метки состоят из одного слова и могу содержать только буквы. Для добавления нескольких меток разделяйте слова пробелом.");
         String labels = checkLabels(scanner.nextLine());
-        return buildNote(text, labels);
+        return createNote(text, labels);
     }
 
     @Override
@@ -59,7 +59,7 @@ public class NoteDaoImpl implements NoteDao {
         if (line.isEmpty()) {
             log.info(toString(notes));
         } else {
-            notes = matches(buildLabels(checkLabels(line)));
+            notes = matches(createLabels(checkLabels(line)));
             log.info(toString(notes));
         }
         return notes;
@@ -163,14 +163,14 @@ public class NoteDaoImpl implements NoteDao {
         return labels;
     }
 
-    private Note buildNote(String checkedText, String checkedLabels) {
-        Note note = new Note(noteBook, checkedText, buildLabels(checkedLabels.toUpperCase()));
+    private Note createNote(String checkedText, String checkedLabels) {
+        Note note = new Note(noteBook, checkedText, createLabels(checkedLabels.toUpperCase()));
         noteBook.setNote(note);
         log.info("Заметка добавлена");
         return note;
     }
 
-    private List<Label> buildLabels(String checkedLabels) {
+    private List<Label> createLabels(String checkedLabels) {
         return Stream.of(checkedLabels.replaceAll("\\s+", " ").strip().split(" ")).map(Label::new).toList();
     }
 

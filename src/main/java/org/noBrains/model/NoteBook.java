@@ -16,7 +16,7 @@ public class NoteBook {
 
     public static void launch() {
         NoteService noteService = new NoteServiceImpl(new NoteDaoImpl(new NoteBook()));
-        System.out.println("Это Ваша записная книжка. Вот список доступных команд: help, note-new, note-list, note-remove, note-export, exit.");
+        log.info("Это Ваша записная книжка. Вот список доступных команд: help, note-new, note-list, note-remove, note-export, exit.");
         Scanner scanner = new Scanner(System.in);
         while (scanner.hasNext()) {
             String line = scanner.nextLine().strip();
