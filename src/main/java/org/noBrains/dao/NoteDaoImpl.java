@@ -43,8 +43,10 @@ public class NoteDaoImpl implements NoteDao {
         logCallCommand("note-new");
         Scanner scanner = new Scanner(System.in);
         log.info("Введите заметку");
+        String text = checkText(scanner.nextLine());
         log.info("Добавить метки? Метки состоят из одного слова и могу содержать только буквы. Для добавления нескольких меток разделяйте слова пробелом.");
-        return buildNote(checkText(scanner.nextLine()), checkLabels(scanner.nextLine()));
+        String labels = checkLabels(scanner.nextLine());
+        return buildNote(text, labels);
     }
 
     @Override
