@@ -23,7 +23,7 @@ public class NoteBook {
             try {
                 switch (line) {
                     case "help" -> noteService.getAllCommands();
-                    case "note-new" -> noteService.createNewNote();
+                    case "note-new" -> noteService.createNote();
                     case "note-list" -> noteService.getNotes();
                     case "note-remove" -> noteService.removeNoteById();
                     case "note-export" -> noteService.exportNotesToFile();

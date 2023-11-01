@@ -21,8 +21,8 @@ public class NoteServiceImpl implements NoteService {
     }
 
     @Override
-    public Note createNewNote() throws Exception {
-        return noteDao.createNewNote();
+    public Note createNote() throws Exception {
+        return noteDao.createNote();
     }
 
     @Override

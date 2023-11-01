@@ -31,7 +31,7 @@ public class NoteServiceTest {
     @Test
     public void testCreateNote_WithCorrectTextAndLabel() throws Exception {
         readFromConsole("text\nlabel");
-        Note note = noteService.createNewNote();
+        Note note = noteService.createNote();
         assertTrue(note.getId() == 1 && note.getText().equals("text") && note.getLabels().size() == 1 && note.getLabels().get(0).toString().equals("LABEL"));
     }
 
@@ -39,7 +39,7 @@ public class NoteServiceTest {
     @Test
     public void testCreateNote_WithoutLabel() throws Exception {
         readFromConsole("text\n\n");
-        Note note = noteService.createNewNote();
+        Note note = noteService.createNote();
         assertTrue(note.getId() == 1 && note.getText().equals("text") && note.getLabels().get(0).toString().isEmpty());
     }
 
@@ -47,23 +47,23 @@ public class NoteServiceTest {
     @Test
     public void testCreateNote_WithTextLessThanMinCharacters() {
         readFromConsole("te\nlabel");
-        assertThrows(Exception.class, noteService::createNewNote);
+        assertThrows(Exception.class, noteService::createNote);
     }
 
     @DisplayName("Создание заметки с некорректным значением метки")
     @Test
     public void testCreateNote_WithAnIncorrectLabelValue() {
         readFromConsole("text\n23");
-        assertThrows(Exception.class, noteService::createNewNote);
+        assertThrows(Exception.class, noteService::createNote);
     }
 
     @DisplayName("Уникальность id при создании заметок")
     @Test
     public void testGenId_ConfirmUnique() throws Exception {
         readFromConsole("text\nlabel");
-        Note note = noteService.createNewNote();
+        Note note = noteService.createNote();
         readFromConsole("text2\nanotherLabel");
-        Note note2 = noteService.createNewNote();
+        Note note2 = noteService.createNote();
         assertNotEquals(note.getId(), note2.getId());
     }
 
@@ -71,7 +71,7 @@ public class NoteServiceTest {
     @Test
     public void testRemoveNote_WithNonExistentId() throws Exception {
         readFromConsole("text\nlabel");
-        noteService.createNewNote();
+        noteService.createNote();
         readFromConsole("2");
         assertThrows(Exception.class, noteService::removeNoteById);
         assertEquals(1, noteBook.getNotes().size());
@@ -81,7 +81,7 @@ public class NoteServiceTest {
     @Test
     public void testRemoveNote_WithIncorrectDataType() throws Exception {
         readFromConsole("text\nlabel");
-        noteService.createNewNote();
+        noteService.createNote();
         readFromConsole("q");
         assertThrows(Exception.class, noteService::removeNoteById);
         assertEquals(1, noteBook.getNotes().size());
@@ -91,11 +91,11 @@ public class NoteServiceTest {
     @Test
     public void testGenId_ConfirmDoesNotRepeat() throws Exception {
         readFromConsole("text\nlabel");
-        Note note = noteService.createNewNote();
+        Note note = noteService.createNote();
         readFromConsole("1");
         noteService.removeNoteById();
         readFromConsole("text2\nanotherLabel");
-        Note note2 = noteService.createNewNote();
+        Note note2 = noteService.createNote();
         assertTrue(note.getId() == 1 && note2.getId() == 2);
     }
 }

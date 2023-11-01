@@ -7,7 +7,7 @@ import java.util.List;
 public interface NoteService {
     String getAllCommands();
 
-    Note createNewNote() throws Exception;
+    Note createNote() throws Exception;
 
     List<Note> getNotes() throws Exception;
 

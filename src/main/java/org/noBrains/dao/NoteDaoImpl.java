@@ -39,7 +39,7 @@ public class NoteDaoImpl implements NoteDao {
     }
 
     @Override
-    public Note createNewNote() throws Exception {
+    public Note createNote() throws Exception {
         logCallCommand("note-new");
         Scanner scanner = new Scanner(System.in);
         log.info("Введите заметку");

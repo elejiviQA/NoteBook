@@ -7,7 +7,7 @@ import java.util.List;
 public interface NoteDao {
     String getAllCommands();
 
-    Note createNewNote() throws Exception;
+    Note createNote() throws Exception;
 
     List<Note> getNotes() throws Exception;
 
