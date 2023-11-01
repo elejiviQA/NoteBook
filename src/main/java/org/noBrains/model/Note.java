@@ -1,22 +1,19 @@
 package org.noBrains.model;
 
 import lombok.extern.java.Log;
-import java.util.ArrayList;
+
 import java.util.List;
 
 @Log
 public class Note {
-    private static Long count = 0L;
-    private static final List<Note> notes = new ArrayList<>(); //may be not final
-    private final List<Label> labels;
     private final Long id;
     private final String text;
+    private final List<Label> labels;
 
-
-    public Note(String text, List<Label> labels) {
+    public Note(NoteBook noteBook, String text, List<Label> labels) {
         this.text = text;
         this.labels = labels;
-        id = generateId();
+        id = noteBook.getNewId();
     }
 
     @Override
@@ -31,18 +28,6 @@ public class Note {
             sb.append(sp).append("===================").append(sp);
         }
         return sb.toString();
-    }
-
-    private long generateId() {
-        return ++count;
-    }
-
-    public static void setNote(Note note) {
-        notes.add(note);
-    }
-
-    public static List<Note> getNotesList() {
-        return notes;
     }
 
     public List<Label> getLabels() {
