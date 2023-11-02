@@ -15,7 +15,6 @@ import org.noBrains.service.NoteServiceImpl;
 
 public class NoteServiceTest {
     private NoteService noteService;
-    private NoteBook noteBook;
 
     private void readFromConsole(String text) {
         System.setIn(new ByteArrayInputStream(text.getBytes()));
@@ -23,8 +22,7 @@ public class NoteServiceTest {
 
     @BeforeEach
     void prepare() {
-        noteBook = new NoteBook();
-        noteService = new NoteServiceImpl(new NoteDaoImpl(noteBook));
+        noteService = new NoteServiceImpl(new NoteDaoImpl(new NoteBook()));
     }
 
     @DisplayName("Создание заметки с заполнением всех полей корректными значениями")
@@ -74,7 +72,7 @@ public class NoteServiceTest {
         noteService.createNote();
         readFromConsole("2");
         assertThrows(Exception.class, noteService::removeNoteById);
-        assertEquals(1, noteBook.getNotes().size());
+        assertEquals(1, noteService.getAllNotesList().size());
     }
 
     @DisplayName("Удаление заметки с некорректным типом данных id")
@@ -84,7 +82,7 @@ public class NoteServiceTest {
         noteService.createNote();
         readFromConsole("q");
         assertThrows(Exception.class, noteService::removeNoteById);
-        assertEquals(1, noteBook.getNotes().size());
+        assertEquals(1, noteService.getAllNotesList().size());
     }
 
     @DisplayName("Потеря id после удаления заметки")

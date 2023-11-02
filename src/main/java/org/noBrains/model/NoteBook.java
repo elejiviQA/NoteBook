@@ -24,7 +24,7 @@ public class NoteBook {
                 switch (line) {
                     case "help" -> noteService.getAllCommands();
                     case "note-new" -> noteService.createNote();
-                    case "note-list" -> noteService.getNotes();
+                    case "note-list" -> noteService.findNotesByLabels();
                     case "note-remove" -> noteService.removeNoteById();
                     case "note-export" -> noteService.exportNotesToFile();
                     case "exit" -> noteService.exit();
@@ -33,7 +33,6 @@ public class NoteBook {
             } catch (Exception e) {
                 log.warning(e.getMessage());
             }
-
         }
     }
 
@@ -45,7 +44,7 @@ public class NoteBook {
         return genNewId();
     }
 
-    public List<Note> getNotes() {
+    public List<Note> getAllNotes() {
         return notes;
     }
 
