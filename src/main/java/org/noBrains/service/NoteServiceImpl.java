@@ -84,7 +84,7 @@ public class NoteServiceImpl implements NoteService {
         checkIfListNotesIsEmpty();
         log.info("Введите метки, чтобы отобразить определенные заметки или оставьте пустым для отображения всех заметок");
         List<Note> matchingNotes = noteDao.findNotesByLabels(buildLabelsList(checkLabels(new Scanner(System.in).nextLine())));
-        log.info(convertMatchingNotesToString(matchingNotes));
+        matchingNotes.forEach(note -> log.info(note.toString()));
         return matchingNotes;
     }
 
@@ -110,23 +110,6 @@ public class NoteServiceImpl implements NoteService {
 
     private List<Label> buildLabelsList(String checkedLabels) {
         return Stream.of(checkedLabels.replaceAll("\\s+", " ").strip().split(" ")).map(Label::new).toList();
-    }
-
-    private String convertMatchingNotesToString(List<Note> matchingNotes) {
-        StringBuilder sb = new StringBuilder();
-        String sp = String.format("%n");
-        for (Note note : matchingNotes) {
-            List<Label> labels = note.getLabels();
-            sb.append("{").append(note.getId()).append("}#{").append(note.getText()).append("}").append(sp);
-            if (!labels.get(0).toString().isEmpty()) {
-                labels.forEach(label -> sb.append("{").append(label).append("};"));
-                sb.deleteCharAt(sb.length() - 1).append(sp).append(sp).append("===================").append(sp).append(sp);
-            } else {
-                sb.append(sp).append("===================").append(sp).append(sp);
-            }
-        }
-        sb.delete(sb.length() - 23, sb.length() - 1);
-        return sb.toString();
     }
 
     @Override
