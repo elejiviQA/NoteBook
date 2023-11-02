@@ -31,13 +31,13 @@ public class NoteServiceImpl implements NoteService {
     }
 
     @Override
-    public boolean removeNoteById() throws Exception {
-        return noteDao.removeNoteById();
+    public void removeNoteById() throws Exception {
+        noteDao.removeNoteById();
     }
 
     @Override
-    public boolean exportNotesToFile() throws Exception {
-        return noteDao.exportNotesToFile();
+    public void exportNotesToFile() throws Exception {
+        noteDao.exportNotesToFile();
     }
 
     @Override

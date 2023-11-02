@@ -66,26 +66,24 @@ public class NoteDaoImpl implements NoteDao {
     }
 
     @Override
-    public boolean removeNoteById() throws Exception {
+    public void removeNoteById() throws Exception {
         logCallCommand("note-remove");
         List<Note> notes = sayIfEmpty(noteBook.getNotes());
         log.info("введите id удаляемой заметки");
         Scanner scanner = new Scanner(System.in);
-        boolean result = removeIfExists(notes, checkId(scanner.nextLine()));
+        removeIfExists(notes, checkId(scanner.nextLine()));
         log.info("Заметка удалена");
-        return result;
     }
 
     @Override
-    public boolean exportNotesToFile() throws Exception {
+    public void exportNotesToFile() throws Exception {
         logCallCommand("note-export");
         List<Note> notes = sayIfEmpty(noteBook.getNotes());
         String dirName = "notes";
         checkDirectory(dirName);
         String filePath = buildFilePath(dirName);
-        boolean result = writeNotesInFile(notes, filePath);
+        writeNotesInFile(notes, filePath);
         log.info("Успешное завершение экспорта");
-        return result;
     }
 
     @Override
@@ -107,12 +105,11 @@ public class NoteDaoImpl implements NoteDao {
         }
     }
 
-    private boolean removeIfExists(List<Note> notes, Long id) throws Exception {
+    private void removeIfExists(List<Note> notes, Long id) throws Exception {
         if (!notes.removeIf(note -> note.getId().equals(id))) {
             log.info("Такого id не существует");
             throw new Exception("Такого id не существует");
         }
-        return true;
     }
 
     private void checkDirectory(String dirName) throws RuntimeException {
@@ -131,7 +128,7 @@ public class NoteDaoImpl implements NoteDao {
         return dirName + "/" + "notes_" + new SimpleDateFormat("yyyy.MM.dd_HH-mm-ss").format(new Date()) + ".txt";
     }
 
-    private boolean writeNotesInFile(List<Note> notes, String filePath) throws RuntimeException {
+    private void writeNotesInFile(List<Note> notes, String filePath) throws RuntimeException {
         try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(filePath))) {
             notes.forEach(note -> {
                 try {
@@ -144,7 +141,6 @@ public class NoteDaoImpl implements NoteDao {
         } catch (IOException e) {
             throw new RuntimeException("Ошибка записи");
         }
-        return true;
     }
 
     private String checkText(String text) throws Exception {

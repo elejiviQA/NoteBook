@@ -11,9 +11,9 @@ public interface NoteDao {
 
     List<Note> getNotes() throws Exception;
 
-    boolean removeNoteById() throws Exception;
+    void removeNoteById() throws Exception;
 
-    boolean exportNotesToFile() throws Exception;
+    void exportNotesToFile() throws Exception;
 
     void exit();
 }
