@@ -4,11 +4,7 @@ import lombok.extern.java.Log;
 import org.noBrains.dao.NoteDao;
 import org.noBrains.model.Label;
 import org.noBrains.model.Note;
-
-import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -26,7 +22,7 @@ public class NoteServiceImpl implements NoteService {
     }
 
     @Override
-    public String getAllCommands() {
+    public void getAllCommands() {
         logCallCommand("help");
         String commands = """
                 help - выводит на экран список доступных команд с их описанием
@@ -37,7 +33,6 @@ public class NoteServiceImpl implements NoteService {
                 exit - выход из приложения
                 """;
         log.info(commands);
-        return commands;
     }
 
     private void logCallCommand(String command) {
@@ -79,13 +74,12 @@ public class NoteServiceImpl implements NoteService {
     }
 
     @Override
-    public List<Note> findNotesByLabels() throws Exception {
+    public void findNotesByLabels() throws Exception {
         logCallCommand("note-list");
         checkIfListNotesIsEmpty();
         log.info("Введите метки, чтобы отобразить определенные заметки или оставьте пустым для отображения всех заметок");
         List<Note> matchingNotes = noteDao.findNotesByLabels(buildLabelsList(checkLabels(new Scanner(System.in).nextLine())));
         matchingNotes.forEach(note -> log.info(note.toString()));
-        return matchingNotes;
     }
 
     private void checkIfListNotesIsEmpty() throws Exception {
@@ -126,31 +120,18 @@ public class NoteServiceImpl implements NoteService {
         logCallCommand("note-export");
         checkIfListNotesIsEmpty();
         String dirName = "notes";
-        checkDirectory(dirName);
-        String filePath = buildFilePath(dirName);
-        noteDao.exportNotesToFile(filePath);
+        String fileName = "notes_" + new SimpleDateFormat("yyyy.MM.dd_HH-mm-ss").format(new Date()) + ".txt";
+        noteDao.exportNotesToFile(dirName, buildFilePath(dirName, fileName));
         log.info("Успешное завершение экспорта");
     }
 
-    private void checkDirectory(String dirName) throws RuntimeException {
-        Path dirPath = Paths.get(dirName);
-        try {
-            if (!Files.exists(dirPath)) {
-                Files.createDirectory(dirPath);
-            }
-        } catch (IOException e) {
-            log.info("Нет возможности обратиться к директории");
-            throw new RuntimeException("Нет возможности обратиться к директории");
-        }
-    }
-
-    private String buildFilePath(String dirName) throws RuntimeException {
-        return dirName + "/" + "notes_" + new SimpleDateFormat("yyyy.MM.dd_HH-mm-ss").format(new Date()) + ".txt";
+    private Path buildFilePath(String dirName, String fileName) throws RuntimeException {
+        return Path.of(dirName + "/" + fileName);
     }
 
     @Override
     public void exit() {
         logCallCommand("exit");
-        noteDao.exit();
+        System.exit(0);
     }
 }

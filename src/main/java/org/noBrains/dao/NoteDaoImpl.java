@@ -3,6 +3,9 @@ package org.noBrains.dao;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 
 import lombok.extern.java.Log;
@@ -73,12 +76,25 @@ public class NoteDaoImpl implements NoteDao {
     }
 
     @Override
-    public void exportNotesToFile(String filePath) {
+    public void exportNotesToFile(String dirName, Path filePath) {
+        checkDirectory(dirName);
         writeNotesInFile(getAllNotesList(), filePath);
     }
 
-    private void writeNotesInFile(List<Note> notes, String filePath) throws RuntimeException {
-        try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(filePath))) {
+    private void checkDirectory(String dirName) throws RuntimeException {
+        Path dirPath = Paths.get(dirName);
+        try {
+            if (!Files.exists(dirPath)) {
+                Files.createDirectory(dirPath);
+            }
+        } catch (IOException e) {
+            log.info("Невозможно обратиться к директории");
+            throw new RuntimeException("Невозможно обратиться к директории");
+        }
+    }
+
+    private void writeNotesInFile(List<Note> notes, Path filePath) {
+        try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(filePath.toFile()))) {
             notes.forEach(note -> {
                 try {
                     bufferedWriter.write(note + String.format("%n"));
@@ -88,12 +104,8 @@ public class NoteDaoImpl implements NoteDao {
                 }
             });
         } catch (IOException e) {
+            log.info("Ошибка записи");
             throw new RuntimeException("Ошибка записи");
         }
-    }
-
-    @Override
-    public void exit() {
-        System.exit(0);
     }
 }

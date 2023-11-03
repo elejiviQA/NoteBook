@@ -51,4 +51,5 @@ public class NoteBook {
     public void setNote(Note note) {
         notes.add(note);
     }
+
 }
