@@ -32,12 +32,12 @@ public class Note {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         String sp = String.format("%n");
-        sb.append("{").append(id).append("}#{").append(text).append("}").append(sp);
+        sb.append(sp).append("{").append(id).append("}#{").append(text).append("}").append(sp);
         if (!labels.get(0).toString().isEmpty()) {
             labels.forEach(label -> sb.append("{").append(label).append("};"));
-            sb.deleteCharAt(sb.length() - 1).append(sp).append(sp).append("===================").append(sp);
+            sb.deleteCharAt(sb.length() - 1).append(sp).append(sp).append("===================");
         } else {
-            sb.append(sp).append("===================").append(sp);
+            sb.append(sp).append("===================");
         }
         return sb.toString();
     }

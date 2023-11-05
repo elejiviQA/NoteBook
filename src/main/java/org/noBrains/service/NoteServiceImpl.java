@@ -4,6 +4,7 @@ import lombok.extern.java.Log;
 import org.noBrains.dao.NoteDao;
 import org.noBrains.model.Label;
 import org.noBrains.model.Note;
+
 import java.nio.file.Path;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -19,6 +20,27 @@ public class NoteServiceImpl implements NoteService {
 
     public NoteServiceImpl(NoteDao noteDao) {
         this.noteDao = noteDao;
+    }
+
+    public void launch() {
+        log.info("Это Ваша записная книжка. Вот список доступных команд: help, note-new, note-list, note-remove, note-export, exit.");
+        Scanner scanner = new Scanner(System.in);
+        while (scanner.hasNext()) {
+            String line = scanner.nextLine().strip();
+            try {
+                switch (line) {
+                    case "help" -> getAllCommands();
+                    case "note-new" -> createNote();
+                    case "note-list" -> findNotesByLabels();
+                    case "note-remove" -> removeNoteById();
+                    case "note-export" -> exportNotesToFile();
+                    case "exit" -> exit();
+                    default -> log.warning("команда не найдена");
+                }
+            } catch (Exception e) {
+                log.warning(e.getMessage());
+            }
+        }
     }
 
     @Override
@@ -76,14 +98,17 @@ public class NoteServiceImpl implements NoteService {
     @Override
     public void findNotesByLabels() throws Exception {
         logCallCommand("note-list");
-        checkIfListNotesIsEmpty();
+        checkIfListNotesIsEmpty(getAllNotesList());
         log.info("Введите метки, чтобы отобразить определенные заметки или оставьте пустым для отображения всех заметок");
         List<Note> matchingNotes = noteDao.findNotesByLabels(buildLabelsList(checkLabels(new Scanner(System.in).nextLine())));
-        matchingNotes.forEach(note -> log.info(note.toString()));
+        checkIfListNotesIsEmpty(matchingNotes);
+        StringBuilder sb = new StringBuilder();
+        matchingNotes.forEach(note -> sb.append(note.toString()).append("\n"));
+        log.info(sb.toString());
     }
 
-    private void checkIfListNotesIsEmpty() throws Exception {
-        if (noteDao.getAllNotesList().isEmpty()) {
+    private void checkIfListNotesIsEmpty(List<Note> notes) throws Exception {
+        if (notes.isEmpty()) {
             log.info("Заметок не найдено");
             throw new Exception("Заметок не найдено");
         }
@@ -109,7 +134,7 @@ public class NoteServiceImpl implements NoteService {
     @Override
     public void removeNoteById() throws Exception {
         logCallCommand("note-remove");
-        checkIfListNotesIsEmpty();
+        checkIfListNotesIsEmpty(getAllNotesList());
         log.info("введите id удаляемой заметки");
         noteDao.removeNoteById(checkId(new Scanner(System.in).nextLine()));
         log.info("Заметка удалена");
@@ -118,7 +143,7 @@ public class NoteServiceImpl implements NoteService {
     @Override
     public void exportNotesToFile() throws Exception {
         logCallCommand("note-export");
-        checkIfListNotesIsEmpty();
+        checkIfListNotesIsEmpty(getAllNotesList());
         String dirName = "notes";
         String fileName = "notes_" + new SimpleDateFormat("yyyy.MM.dd_HH-mm-ss").format(new Date()) + ".txt";
         noteDao.exportNotesToFile(dirName, buildFilePath(dirName, fileName));

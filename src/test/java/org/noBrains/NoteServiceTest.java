@@ -4,9 +4,9 @@ import java.io.ByteArrayInputStream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.noBrains.dao.NoteDaoImpl;
 import org.noBrains.model.Note;
 import org.noBrains.model.NoteBook;
@@ -14,15 +14,12 @@ import org.noBrains.service.NoteService;
 import org.noBrains.service.NoteServiceImpl;
 
 public class NoteServiceTest {
-    private NoteService noteService;
+
+    @Mock
+    private final NoteService noteService = new NoteServiceImpl(new NoteDaoImpl(new NoteBook()));
 
     private void readFromConsole(String text) {
         System.setIn(new ByteArrayInputStream(text.getBytes()));
-    }
-
-    @BeforeEach
-    void prepare() {
-        noteService = new NoteServiceImpl(new NoteDaoImpl(new NoteBook()));
     }
 
     @DisplayName("Создание заметки с заполнением всех полей корректными значениями")
